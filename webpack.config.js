@@ -1,5 +1,6 @@
 var path = require('path');
 var glob = require('glob');
+var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
 
@@ -17,7 +18,6 @@ var commonLoaders = [
 ];
 var assetsPath = path.join(__dirname, 'public', 'assets');
 var publicPath = '/assets/';
-
 var extractCSS = new ExtractTextPlugin('[name].[hash].css');
 
 module.exports = [
@@ -40,6 +40,8 @@ module.exports = [
             new ManifestPlugin({
                 fileName: '../../server/generated/client.assets.json'
             }),
+            // This helps ensure the builds are consistent if source hasn't changed:
+            new webpack.optimize.OccurrenceOrderPlugin(),
         ]
     },
 	{
@@ -63,10 +65,12 @@ module.exports = [
             ])
         },
         plugins: [
+            extractCSS,
             new ManifestPlugin({
                 fileName: '../../server/generated/server.assets.json'
             }),
-            extractCSS,
+            // This helps ensure the builds are consistent if source hasn't changed:
+            new webpack.optimize.OccurrenceOrderPlugin(),
         ]
     }
 ];
