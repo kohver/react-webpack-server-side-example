@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var Application = require('./Application');
+var Application = require('./Application/Application');
 
 setTimeout(function () {
 	React.renderComponent(

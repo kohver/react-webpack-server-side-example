@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var Application = require('./Application');
+var Application = require('./Application/Application');
 var ServerPage = require('./ServerPage');
 
 module.exports = function(req, jsFilename, cssFilename) {

@@ -2,5 +2,5 @@
     border: 1px solid;
     width: 200px;
     height: 200px;
-    background: red url('./image.jpg') center;
+    background: red url('../image.jpg') center;
 }

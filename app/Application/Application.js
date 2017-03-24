@@ -16,8 +16,8 @@ var Application = React.createClass({
 			<div className="application">
 				<h1>Hello World</h1>
 				<pre>{this.props.url}</pre>
-				<img src={require('./image.png')} height="100" />
-				<img src={require('./image.jpg')} height="100" />
+				<img src={require('../image.png')} height="100" />
+				<img src={require('../image.jpg')} height="100" />
 				{this.state.from}
 				{this.state.lazyComponent}
 			</div>
@@ -32,7 +32,7 @@ var Application = React.createClass({
 		});
 
 		require.ensure([], function() {
-			var Lazy = require('./Lazy');
+			var Lazy = require('../Lazy/Lazy');
 
 			t.setState({
 				lazyComponent: <Lazy />,

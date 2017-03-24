@@ -8,7 +8,7 @@ var Lazy = React.createClass({
         return (
             <div className="lazy">
                 Lazy loaded
-                <img src={require('./image.jpg')} height="100" />
+                <img src={require('../image.jpg')} height="100" />
             </div>
         );
     },
