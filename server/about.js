@@ -6,7 +6,7 @@ var Application = require("../app/Application");
 
 var styleCollector = require("./style-collector");
 
-module.exports = function(req, scriptFilename) {
+module.exports = function(req, scriptFilename, cssFilename) {
 
 	var html;
 	var css = styleCollector.collect(function() {
@@ -18,6 +18,7 @@ module.exports = function(req, scriptFilename) {
 				<style id="server-side-style" dangerouslySetInnerHTML={{__html: css}} />
 			</head>
 			<body>
+				cssFilename: [{cssFilename}]
 				<div id="content" dangerouslySetInnerHTML={{__html: html}} />
 				<script src={"assets/" + scriptFilename}></script>
 			</body>

@@ -1,15 +1,15 @@
 var express = require("express");
 var path = require("path");
-var page = require("./page.generated.js");
 
 var app = express();
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-var stats = require("./stats.generated.json");
+var stats = require("./generated/stats.json");
 
 app.get("/", function(req, res) {
-	res.end(page(req, stats.assetsByChunkName.main));
+    var page = require("./generated/about.js");
+	res.end(page(req, stats.assetsByChunkName.about));
 });
 
 var server = app.listen(3000, function() {
