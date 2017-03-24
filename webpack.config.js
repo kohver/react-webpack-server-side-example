@@ -18,7 +18,7 @@ var commonLoaders = [
 var assetsPath = path.join(__dirname, 'public', 'assets');
 var publicPath = '/assets/';
 
-var extractCSS = new ExtractTextPlugin('[name].[hash].css', {allChunks: true});
+var extractCSS = new ExtractTextPlugin('[name].[hash].css');
 
 module.exports = [
 	{
@@ -32,8 +32,8 @@ module.exports = [
 		},
 		module: {
             loaders: commonLoaders.concat([
-                // { test: /\.css$/, loader: "style-loader!css-loader" },
-                { test: /\.css$/, loader: 'null-loader' },
+                // todo duplicate styles
+                { test: /\.css$/, loader: 'style-loader!css-loader' },
             ])
 		},
         plugins: [
