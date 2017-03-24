@@ -9,7 +9,7 @@ var serverAssets = require('./generated/server.assets.json');
 var clientAssets = require('./generated/client.assets.json');
 
 app.get('/:page', function(req, res) {
-    var page = require('./generated/' + req.params.page + '.js');
+    var page = require('./generated/' + req.params.page + '.js').default;
 
 	res.end(page(
 	    req,

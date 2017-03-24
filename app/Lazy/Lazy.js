@@ -1,9 +1,7 @@
-/** @jsx React.DOM */
-
-var React = require('react');
+import React from 'react';
 require('./Lazy.css');
 
-var Lazy = React.createClass({
+export default React.createClass({
     render: function() {
         return (
             <div className="lazy">
@@ -13,5 +11,3 @@ var Lazy = React.createClass({
         );
     },
 });
-
-module.exports = Lazy;

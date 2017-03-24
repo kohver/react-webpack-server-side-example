@@ -1,8 +1,6 @@
-/** @jsx React.DOM */
+import React from 'react';
 
-var React = require('react');
-
-module.exports = React.createClass({
+export default React.createClass({
     render: function() {
         return (
             <html>

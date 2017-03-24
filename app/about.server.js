@@ -1,17 +1,16 @@
-/** @jsx React.DOM */
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import Application from './Application/Application';
+import ServerPage from './ServerPage';
 
-var React = require('react');
-var Application = require('./Application/Application');
-var ServerPage = require('./ServerPage');
-
-module.exports = function(req, jsFilename, cssFilename) {
-    return React.renderComponentToStaticMarkup(
+export default function(req, jsFilename, cssFilename) {
+    return ReactDOMServer.renderToStaticMarkup(
 		<ServerPage
 			title="About"
 			cssFilename={cssFilename}
 			jsFilename={jsFilename}
 		>
-			<div id="root" dangerouslySetInnerHTML={{__html: React.renderComponentToString(
+			<div id="root" dangerouslySetInnerHTML={{__html: ReactDOMServer.renderToString(
 				<Application
 					url={req.url}
 				/>

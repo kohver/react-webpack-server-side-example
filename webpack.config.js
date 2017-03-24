@@ -12,9 +12,22 @@ var getEntriesInFolder = function(folder, extension) {
 };
 
 var commonLoaders = [
-	{ test: /\.js$/, loader: 'jsx-loader' },
-	{ test: /\.png$/, loader: 'url-loader' },
-	{ test: /\.jpg$/, loader: 'file-loader' },
+    {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        options: {
+            // This is a feature of `babel-loader` for webpack (not Babel itself).
+            // It enables caching results in ./node_modules/.cache/babel-loader/
+            // directory for faster rebuilds.
+            cacheDirectory: true,
+            presets: ['react', ['es2015', {modules: false}]],
+            plugins: [
+                'syntax-dynamic-import',
+            ],
+        }
+    },
+    { test: /\.png$/, loader: 'url-loader' },
+    { test: /\.jpg$/, loader: 'file-loader' },
 ];
 var assetsPath = path.join(__dirname, 'public', 'assets');
 var publicPath = '/assets/';
@@ -31,7 +44,7 @@ module.exports = [
 			publicPath: publicPath
 		},
 		module: {
-            loaders: commonLoaders.concat([
+            rules: commonLoaders.concat([
                 // todo duplicate styles
                 { test: /\.css$/, loader: 'style-loader!css-loader' },
             ])
@@ -40,8 +53,6 @@ module.exports = [
             new ManifestPlugin({
                 fileName: '../../server/generated/client.assets.json'
             }),
-            // This helps ensure the builds are consistent if source hasn't changed:
-            new webpack.optimize.OccurrenceOrderPlugin(),
         ]
     },
 	{
@@ -57,7 +68,7 @@ module.exports = [
 		},
 		externals: /^[a-z\-0-9]+$/,
 		module: {
-            loaders: commonLoaders.concat([
+            rules: commonLoaders.concat([
                 {
                     test: /\.css$/,
                     loader: extractCSS.extract({ fallback: 'style-loader', use: 'css-loader' }),
@@ -69,8 +80,6 @@ module.exports = [
             new ManifestPlugin({
                 fileName: '../../server/generated/server.assets.json'
             }),
-            // This helps ensure the builds are consistent if source hasn't changed:
-            new webpack.optimize.OccurrenceOrderPlugin(),
         ]
     }
 ];

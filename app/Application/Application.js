@@ -1,9 +1,7 @@
-/** @jsx React.DOM */
+import React from 'react';
+import './Application.css';
 
-var React = require('react');
-require('./Application.css');
-
-var Application = React.createClass({
+export default React.createClass({
 	getInitialState: function() {
 		return {
 			from: 'server',
@@ -25,20 +23,16 @@ var Application = React.createClass({
 	},
 
 	componentDidMount: function() {
-		var t = this;
-
 		this.setState({
 			from: 'client',
 		});
 
-		require.ensure([], function() {
-			var Lazy = require('../Lazy/Lazy');
+		import('../Lazy/Lazy').then(module => {
+		    const Lazy = module.default;
 
-			t.setState({
+			this.setState({
 				lazyComponent: <Lazy />,
 			});
-		});
+        });
     }
 });
-
-module.exports = Application;

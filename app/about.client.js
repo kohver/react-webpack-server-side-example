@@ -1,10 +1,9 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var Application = require('./Application/Application');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Application from './Application/Application';
 
 setTimeout(function () {
-	React.renderComponent(
+    ReactDOM.render(
 		<Application
 			url={location.pathname + (location.search || '')}
 		/>,
