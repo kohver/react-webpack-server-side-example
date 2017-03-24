@@ -1,15 +1,21 @@
-var express = require("express");
-var path = require("path");
+var express = require('express');
+var path = require('path');
 
 var app = express();
 
-app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
-var stats = require("./generated/stats.json");
+var serverAssets = require('./generated/server.assets.json');
+var clientAssets = require('./generated/client.assets.json');
 
-app.get("/", function(req, res) {
-    var page = require("./generated/about.js");
-	res.end(page(req, stats.assetsByChunkName.about));
+app.get('/:page', function(req, res) {
+    var page = require('./generated/' + req.params.page + '.js');
+
+	res.end(page(
+	    req,
+        clientAssets[req.params.page + '.js'],
+        serverAssets[req.params.page + '.css']
+    ));
 });
 
 var server = app.listen(3000, function() {

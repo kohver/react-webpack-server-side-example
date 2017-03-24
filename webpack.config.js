@@ -1,64 +1,72 @@
-var path = require("path");
+var path = require('path');
+var glob = require('glob');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ManifestPlugin = require('webpack-manifest-plugin');
+
+var getEntriesInFolder = function(folder, extension) {
+    return glob.sync(folder + '/*' + extension).reduce((entries, page) => {
+        entries[path.basename(page, extension)] = page;
+        return entries;
+    }, {})
+};
 
 var commonLoaders = [
-	{ test: /\.js$/, loader: "jsx-loader" },
-	{ test: /\.png$/, loader: "url-loader" },
-	{ test: /\.jpg$/, loader: "file-loader" },
+	{ test: /\.js$/, loader: 'jsx-loader' },
+	{ test: /\.png$/, loader: 'url-loader' },
+	{ test: /\.jpg$/, loader: 'file-loader' },
 ];
-var assetsPath = path.join(__dirname, "public", "assets");
-var publicPath = "assets/";
+var assetsPath = path.join(__dirname, 'public', 'assets');
+var publicPath = '/assets/';
 
-var page = 'about';
+var extractCSS = new ExtractTextPlugin('[name].[hash].css', {allChunks: true});
 
 module.exports = [
 	{
 		// The configuration for the client
-		name: "browser",
-		entry: {
-			[page]: `./app/${page}.js`,
-        },
+		name: 'browser',
+		entry: getEntriesInFolder('./app', '.client.js'),
 		output: {
 			path: assetsPath,
-			filename: "[name].[hash].js",
+			filename: '[name].[hash].js',
 			publicPath: publicPath
 		},
 		module: {
-			loaders: commonLoaders.concat([
-				{ test: /\.css$/, loader: "style-loader!css-loader" },
-			])
+            loaders: commonLoaders.concat([
+                // { test: /\.css$/, loader: "style-loader!css-loader" },
+                { test: /\.css$/, loader: 'null-loader' },
+            ])
 		},
-		plugins: [
-			function(compiler) {
-				this.plugin("done", function(stats) {
-					require("fs").writeFileSync(
-						path.join(__dirname, "server", "generated", "stats.json"),
-						JSON.stringify(stats.toJson())
-					);
-				});
-			}
-		]
-	},
+        plugins: [
+            new ManifestPlugin({
+                fileName: '../../server/generated/client.assets.json'
+            }),
+        ]
+    },
 	{
 		// The configuration for the server-side rendering
-		name: "server-side rendering",
-		entry: {
-			[page]: `./server/${page}.js`,
-        },
-		target: "node",
+		name: 'server-side rendering',
+        entry: getEntriesInFolder('./app', '.server.js'),
+		target: 'node',
 		output: {
 			path: assetsPath,
-			filename: "../../server/generated/[name].js",
+			filename: '../../server/generated/[name].js',
 			publicPath: publicPath,
-			libraryTarget: "commonjs2"
+			libraryTarget: 'commonjs2'
 		},
 		externals: /^[a-z\-0-9]+$/,
 		module: {
-			loaders: commonLoaders.concat([
-				{
-					test: /\.css$/,
-					loader: path.join(__dirname, "server", "style-collector") + "!css-loader"
-				},
-			])
-		}
-	}
+            loaders: commonLoaders.concat([
+                {
+                    test: /\.css$/,
+                    loader: extractCSS.extract('style-loader', 'css-loader'),
+                },
+            ])
+        },
+        plugins: [
+            new ManifestPlugin({
+                fileName: '../../server/generated/server.assets.json'
+            }),
+            extractCSS,
+        ]
+    }
 ];
