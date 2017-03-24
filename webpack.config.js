@@ -60,7 +60,7 @@ module.exports = [
             loaders: commonLoaders.concat([
                 {
                     test: /\.css$/,
-                    loader: extractCSS.extract('style-loader', 'css-loader'),
+                    loader: extractCSS.extract({ fallback: 'style-loader', use: 'css-loader' }),
                 },
             ])
         },
