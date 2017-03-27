@@ -15,7 +15,7 @@ const commonLoaders = [
     {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: path.join(__dirname, 'app'),
+        include: path.join(__dirname, 'src'),
         options: {
             // This is a feature of `babel-loader` for webpack (not Babel itself).
             // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -35,15 +35,16 @@ const commonLoaders = [
         },
     },
 ];
-export const assetsPath = path.join(__dirname, 'public', 'assets');
-export const publicPath = '/assets/';
+const assetsPath = path.join(__dirname, 'public', 'assets');
+const publicPath = '/assets/';
+const srcPath = './src';
 const extractCSS = new ExtractTextPlugin('[name].[hash].css');
 
 module.exports = [
 	{
 		// The configuration for the client
 		name: 'browser',
-		entry: getEntriesInFolder('./app', '.client.js'),
+		entry: getEntriesInFolder(srcPath, '.client.js'),
 		output: {
 			path: assetsPath,
 			filename: '[name].[hash].js',
@@ -64,7 +65,7 @@ module.exports = [
 	{
 		// The configuration for the server-side rendering
 		name: 'server-side rendering',
-        entry: getEntriesInFolder('./app', '.server.js'),
+        entry: getEntriesInFolder(srcPath, '.server.js'),
 		target: 'node',
 		output: {
 			path: assetsPath,

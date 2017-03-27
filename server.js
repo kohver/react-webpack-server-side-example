@@ -6,7 +6,6 @@ const config = require('./webpack.config');
 const wrapArray = strOrArray => typeof strOrArray === 'string' ? [strOrArray] : strOrArray;
 const app = express();
 const evaluate = require('eval');
-import { publicPath } from './webpack.config';
 
 console.log('process.env.NODE_ENV: ' + process.env.NODE_ENV);
 
@@ -16,7 +15,7 @@ if (process.env.NODE_ENV === 'development') {
         stats: {
             colors: true
         },
-        publicPath: publicPath,
+        publicPath: '/assets/',
         serverSideRender: true,
     }));
 } else {
