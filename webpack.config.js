@@ -15,6 +15,7 @@ var commonLoaders = [
     {
         test: /\.js$/,
         loader: 'babel-loader',
+        include: path.join(__dirname, 'app'),
         options: {
             // This is a feature of `babel-loader` for webpack (not Babel itself).
             // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -26,8 +27,13 @@ var commonLoaders = [
             ],
         }
     },
-    { test: /\.png$/, loader: 'url-loader' },
-    { test: /\.jpg$/, loader: 'file-loader' },
+    {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader',
+        options: {
+            limit: 10000,
+        },
+    },
 ];
 var assetsPath = path.join(__dirname, 'public', 'assets');
 var publicPath = '/assets/';
