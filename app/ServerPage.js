@@ -1,25 +1,26 @@
 import React from 'react';
 
-export default React.createClass({
-    render: function() {
-        return (
-            <html>
-            <head>
-                <title>
-                    {this.props.title}
-                </title>
-                {this.props.cssFilename &&
-                    <link href={'assets/' + this.props.cssFilename} rel="stylesheet" />
-                }
-            </head>
-            <body>
-                {this.props.children}
+export const ServerPage = ({
+    title,
+    children,
+    jsFilenames = [],
+    cssFilenames = [],
+}) => (
+    <html>
+    <head>
+        <title>
+            {title}
+        </title>
+        {cssFilenames.map((cssFilename, index) =>
+            <link key={index} href={'assets/' + cssFilename} rel="stylesheet" />
+        )}
+    </head>
+    <body>
+        {children}
 
-                {this.props.jsFilename &&
-                    <script src={'assets/' + this.props.jsFilename}></script>
-                }
-            </body>
-            </html>
-        )
-    }
-});
+        {jsFilenames.map((jsFilename, index) =>
+            <script key={index} src={'assets/' + jsFilename}></script>
+        )}
+    </body>
+    </html>
+);

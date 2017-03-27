@@ -1,17 +1,17 @@
-var path = require('path');
-var glob = require('glob');
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var ManifestPlugin = require('webpack-manifest-plugin');
+const path = require('path');
+const glob = require('glob');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const StatsWriterPlugin = require("webpack-stats-plugin").StatsWriterPlugin;
 
-var getEntriesInFolder = function(folder, extension) {
+const getEntriesInFolder = function(folder, extension) {
     return glob.sync(folder + '/*' + extension).reduce((entries, page) => {
         entries[path.basename(page, extension)] = page;
         return entries;
     }, {})
 };
 
-var commonLoaders = [
+const commonLoaders = [
     {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -35,9 +35,9 @@ var commonLoaders = [
         },
     },
 ];
-var assetsPath = path.join(__dirname, 'public', 'assets');
-var publicPath = '/assets/';
-var extractCSS = new ExtractTextPlugin('[name].[hash].css');
+export const assetsPath = path.join(__dirname, 'public', 'assets');
+export const publicPath = '/assets/';
+const extractCSS = new ExtractTextPlugin('[name].[hash].css');
 
 module.exports = [
 	{
@@ -56,8 +56,8 @@ module.exports = [
             ])
 		},
         plugins: [
-            new ManifestPlugin({
-                fileName: '../../server/generated/client.assets.json'
+            new StatsWriterPlugin({
+                filename: '../../.generated/stats.client.json',
             }),
         ]
     },
@@ -68,7 +68,7 @@ module.exports = [
 		target: 'node',
 		output: {
 			path: assetsPath,
-			filename: '../../server/generated/[name].js',
+			filename: '../../.generated/[name].js',
 			publicPath: publicPath,
 			libraryTarget: 'commonjs2'
 		},
@@ -79,13 +79,18 @@ module.exports = [
                     test: /\.css$/,
                     loader: extractCSS.extract({ fallback: 'style-loader', use: 'css-loader' }),
                 },
-            ])
+            ]),
         },
         plugins: [
             extractCSS,
-            new ManifestPlugin({
-                fileName: '../../server/generated/server.assets.json'
+            // todo remove lazy load plugins for server (0.hash.js)
+            // commented because possibly it's a bug https://github.com/webpack/webpack/issues/4178
+            // new webpack.optimize.LimitChunkCountPlugin({
+            //     maxChunks: 0,
+            // }),
+            new StatsWriterPlugin({
+                filename: '../../.generated/stats.server.json',
             }),
-        ]
-    }
+        ],
+    },
 ];

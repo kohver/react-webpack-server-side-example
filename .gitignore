@@ -2,3 +2,4 @@
 /server/generated
 /public/assets
 .idea
+.generated
