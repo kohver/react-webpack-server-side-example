@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development node server",
     "prod": "npm run prod:build && npm run prod:start",
-    "prod:build": "rm -rf ./public/assets .generated webpack -p --progress",
+    "prod:build": "rm -rf ./public/assets .generated && webpack -p --progress",
     "prod:start": "NODE_ENV=production node server"
   },
   "repository": {
