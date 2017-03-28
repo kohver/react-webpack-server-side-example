@@ -1,12 +1,14 @@
 # react-webpack-server-side-example
 
-Example of an react application with webpack including server-side rendering.
+Forked example of an react application with webpack including server-side rendering.
 
-This is not for the normal user. This example is meant as inspiration to develop an framework that can do server-side rendering of react with webpack. You shouldn't use the code, only the idea.
+This is not for the normal user. This example is meant as inspiration to develop an framework that can do server-side
+rendering of react with webpack.
 
 ## Overview
 
-webpack compile with two separate configurations: One for the browser bundle and one for the react application for server-side rendering. The server-side bundle can be required in other node.js code to build the pre-rendered HTML.
+webpack compile with two separate configurations: One for the browser bundle and one for the react application for
+server-side rendering. The server-side bundle can be required in other node.js code to build the pre-rendered HTML.
 
 ## Features
 
@@ -20,7 +22,7 @@ webpack compile with two separate configurations: One for the browser bundle and
 ## Usage
 
 ``` text
-npm start
+npm run dev
 ```
 
 Run the 2 steps:
@@ -31,13 +33,11 @@ Run the 2 steps:
 ### Production
 
 ``` text
-npm run production
+npm run prod
 ```
 
 This compiles production versions for the browser and server-side bundles. It also minimizes javascript and css.
 
 ## License
 
-None. Don't copy the code, only use the idea.
-
-Copyright 2014 Tobias Koppers
+MIT
